@@ -25,7 +25,7 @@ pip install Keras
 Our codes were all edited by Python 3.6.5 with TensorFlow 1.3.0.
 
 # Training the embedding matrix
-Gene2Vec has supplied a trained embedding matrix in `embedding matrix.csv`. The training dataset was chosen as the whole RefSeq genomes. If you would like to train the embedding matrix by youself, jsut run `embedding.py`.
+Gene2Vec has supplied a trained embedding matrix in `embedding matrix.csv`. The training dataset was chosen as the whole RefSeq genomes, the NCBI accession number of which.can be found in `NCBI accession numbers of the whole Refseq genomes.xlsx`. If you would like to train the embedding matrix by youself, jsut run `embedding.py`.
 
 # Usage
 It is simple to use Gene2Vec for users' database. <br>
