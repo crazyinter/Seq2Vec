@@ -10,13 +10,17 @@ Maintainer: Yan Miao miaoyan17@mails.jlu.edu.cn
   The prediction model is a attention based LSTM neural network that learns the high-level features of each contig to distinguish virus from host sequences. The model was trained using equal number of known viral and host sequences from NCBI RefSeq database. For a query sequence shorter than 500bp, it should be first zero-padded up to 500bp. Then the sequence is predicted by the RNN model trained with previously known sequences.
 
 # Dependencies
-To utilize Gene2Vec, Python packages "Keras", "tflearn", "sklearn", "numpy" and "matplotlib" are needed to be previously installed. Some other packages that makes sure the code can be run correctly such as "os", "ast", etc.
+To utilize Gene2Vec, Python packages "tflearn", "sklearn", "numpy" and "matplotlib" are needed to be previously installed. Some other packages that makes sure the code can be run correctly such as "os", "ast", etc.
 
 In convenience, download Anaconda from https://repo.anaconda.com/archive/, which contains most of needed packages. If there still some special packages that are missed when running, you can use "pip install" to install the packages. 
 
 To insatll tensorflow, start "cmd.exe" and enter <br>
 ```
 pip install tensorflow
+```
+To insatll Keras, start "cmd.exe" and enter <br>
+```
+pip install Keras
 ```
 Our codes were all edited by Python 3.6.5 with TensorFlow 1.3.0.
 
