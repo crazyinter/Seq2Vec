@@ -6,7 +6,7 @@ Maintainer: Yan Miao miaoyan17@mails.jlu.edu.cn
 # Description
   This package provides a novel codon embedding method for identification of viral contigs from metagenomic data in a fasta file. The method has the ability to identify viral contigs with short length (<500bp) from metagenomic data.
 
-  Gene2Vec format generally tries to map a nucleotide sequence using a codon dictionary to a vector. Before embedded into a vector, a nucleotide sequence is preprocessed into a string of codons with a stride of some bases. Take a look at the nucleotide sequence “ATAGCCTGAAAGC” for an example. It firstly converted into a format of gene sentence “ATA, TAG, AGC, GCC, CCT, CTG, TGA, GAA, AAA, AAG, AGC” with a stride of one base, where each codon can be regarded as a word in a sentence. The list of all 64 unique codons composes the whole complete dictionary, which is then used to codon embedding. So, a dictionary may look like – [‘AAA’, ‘AAT’, ‘AAG’, ‘AAC’, ‘ATA’, ‘ATT’, ……]. In the training step, the nucleotide sentences “ATAGCCTGAAAGCTTGGATT G” in the training dataset with one-hot encoded codons were firstly separated into a training set for a skip-gram model with context window of 1. Next, the input codons in the formed training set were continuously inputted to the skip-gram model, and then multiplied by the weights between input layer and hidden layer into the hidden activations, which latter got multiplied by the hidden-output weights to calculate the final outputs. Then the costs calculated by the negative log likelihood between final outputs and targets produced in the training set were back-propagated to learn the weights. Finally, the weights between the hidden layer and the output layer were taken as the codon vector representations of the codons, namely the embedding matrix.
+  Gene2Vec format generally tries to map a nucleotide sequence using a codon dictionary to a vector. Before embedded into a vector, a nucleotide sequence is preprocessed into a string of codons with a stride of some bases. Take a look at the nucleotide sequence “ATAGCCTGAAAGC” for an example. It firstly converted into a format of gene sentence “ATA, TAG, AGC, GCC, CCT, CTG, TGA, GAA, AAA, AAG, AGC” with a stride of one base (see `train_500bp.csv`), where each codon can be regarded as a word in a sentence. The list of all 64 unique codons composes the whole complete dictionary, which is then used to codon embedding. So, a dictionary may look like – [‘AAA’, ‘AAT’, ‘AAG’, ‘AAC’, ‘ATA’, ‘ATT’, ……]. In the training step, the nucleotide sentences “ATAGCCTGAAAGCTTGGATT G” in the training dataset with one-hot encoded codons were firstly separated into a training set for a skip-gram model with context window of 1. Next, the input codons in the formed training set were continuously inputted to the skip-gram model, and then multiplied by the weights between input layer and hidden layer into the hidden activations, which latter got multiplied by the hidden-output weights to calculate the final outputs. Then the costs calculated by the negative log likelihood between final outputs and targets produced in the training set were back-propagated to learn the weights. Finally, the weights between the hidden layer and the output layer were taken as the codon vector representations of the codons, namely the embedding matrix.
   The prediction model is a attention based LSTM neural network that learns the high-level features of each contig to distinguish virus from host sequences. The model was trained using equal number of known viral and host sequences from NCBI RefSeq database. For a query sequence shorter than 500bp, it should be first zero-padded up to 500bp. Then the sequence is predicted by the RNN model trained with previously known sequences.
 
 # Dependencies
@@ -22,8 +22,37 @@ Our codes were all edited by Python 3.6.5 with TensorFlow 1.3.0.
 
 # Usage
 It is simple to use Gene2Vec for users' database. <br>
+Before training and testing, the query contigs should be preprocessed to an available format using: <br>
+`f=open('your_data.fasta','r')
+g=open('preprocssed_data.fasta','a') 
+lines=f.readlines()
+contex=3 
+for line in lines:
+    l=len(line)-1
+    for i in range(0,(l-contex+1)):
+        a=line[i:i+contex]
+        x=str(a).replace("AAA","1").replace("TTT","2").replace("GAA","3").replace("AAG","4").replace("AAT","5").\
+        replace("ATT","6").replace("CAA","7").replace("TGA","8").replace("TTC","9").replace("AGA","10").\
+        replace("GAT","11").replace("AAC","12").replace("TAA","13").replace("TTA","14").replace("TCA","15").\
+        replace("TAT","16").replace("ATG","17").replace("TGG","18").replace("ATC","19").replace("TTG","20").\
+        replace("ATA","21").replace("GTT","22").replace("CTG","23").replace("CTT","24").replace("ACA","25").\
+        replace("CAG","26").replace("CGA","27").replace("GGT","28").replace("GGC","29").replace("GCA","30").\
+        replace("CAT","31").replace("GCG","32").replace("CGC","33").replace("GCT","34").replace("TCT","35").\
+        replace("TCG","36").replace("ACC","37").replace("AGC","38").replace("CGG","39").replace("GAC","40").\
+        replace("CCG","41").replace("CCA","42").replace("TGC","43").replace("ACG","44").replace("GGA","45").\
+        replace("TGT","46").replace("ACT","47").replace("TAC","48").replace("AGT","49").replace("GCC","50").\
+        replace("GAG","51").replace("GTA","52").replace("GTG","53").replace("AGG","54").replace("CGT","55").\
+        replace("CAC","56").replace("GTC","57").replace("TCC","58").replace("CCT","59").replace("CTC","60").\
+        replace("CTA","61").replace("GGG","62").replace("TAG","63").replace("CCC","64").replace(",\n","\n")
+        if i<(1-contex+1):
+            g.write(str(x)+",")
+        else:
+            g.write(str(x))
+    g.write("\n")
+f.close()
+g.close()`
 There are two ways for users to train the model using `Gene2Vec_train&test.py`.
-* Using our original training database (containing 4500 viral sequences and 4500 host sequences of length 500bp) `"train_500bp.csv"`. <br>
+* Using our original training database (containing 4500 viral sequences and 4500 host sequences of length 500bp) `"train_500bp.csv"`. If you would like to test query contigs with length 300bp, you can use our train dataset `"train_300bp.csv"`. <br>
 Users can retrain the model first, and then test the query contigs. When training, you can make some changes to the hyperparameters toget a better performance.
 * Using users' own database in a ".csv" format. <br>
 	* Firstly, chose a set of hyperparameters to train your dataset.
