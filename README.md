@@ -7,7 +7,7 @@ Maintainer: Yan Miao miaoyan17@mails.jlu.edu.cn
   This package provides a novel codon embedding method for identification of viral contigs from metagenomic data in a fasta file. The method has the ability to identify viral contigs with short length (<500bp) from metagenomic data.
 
   Gene2Vec format generally tries to map a nucleotide sequence using a codon dictionary to a vector. Before embedded into a vector, a nucleotide sequence is preprocessed into a string of codons with a stride of some bases. Take a look at the nucleotide sequence “ATAGCCTGAAAGC” for an example. It firstly converted into a format of gene sentence “ATA, TAG, AGC, GCC, CCT, CTG, TGA, GAA, AAA, AAG, AGC” with a stride of one base (see `train_500bp.csv`), where each codon can be regarded as a word in a sentence. The list of all 64 unique codons composes the whole complete dictionary, which is then used to codon embedding. So, a dictionary may look like – [‘AAA’, ‘AAT’, ‘AAG’, ‘AAC’, ‘ATA’, ‘ATT’, ……]. In the training step, the nucleotide sentences “ATAGCCTGAAAGCTTGGATT G” in the training dataset with one-hot encoded codons were firstly separated into a training set for a skip-gram model with context window of 1. Next, the input codons in the formed training set were continuously inputted to the skip-gram model, and then multiplied by the weights between input layer and hidden layer into the hidden activations, which latter got multiplied by the hidden-output weights to calculate the final outputs. Then the costs calculated by the negative log likelihood between final outputs and targets produced in the training set were back-propagated to learn the weights. Finally, the weights between the hidden layer and the output layer were taken as the codon vector representations of the codons, namely the embedding matrix.
-  The prediction model is a attention based LSTM neural network that learns the high-level features of each contig to distinguish virus from host sequences. The model was trained using equal number of known viral and host sequences from NCBI RefSeq database. For a query sequence shorter than 500bp, it should be first zero-padded up to 500bp. Then the sequence is predicted by the RNN model trained with previously known sequences.
+  The prediction model is a attention based LSTM neural network that learns the high-level features of each contig to distinguish virus from host sequences. The model was trained using equal number of known viral and host sequences from NCBI RefSeq database. Then the sequence is predicted by the RNN model trained with previously known sequences.
 
 # Dependencies
 To utilize Gene2Vec, Python packages "tflearn", "sklearn", "numpy" and "matplotlib" are needed to be previously installed. Some other packages that makes sure the code can be run correctly such as "os", "ast", etc.
@@ -23,6 +23,9 @@ To insatll Keras, start "cmd.exe" and enter <br>
 pip install Keras
 ```
 Our codes were all edited by Python 3.6.5 with TensorFlow 1.3.0.
+
+# Train the embedding matrix
+Gene2Vec has supplied a trained embedding matrix in `embedding matrix.csv`. If you would like to train the embedding matrix by youself, jsut run `embedding.py`.
 
 # Usage
 It is simple to use Gene2Vec for users' database. <br>
