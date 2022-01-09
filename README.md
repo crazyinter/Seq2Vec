@@ -14,7 +14,7 @@ To utilize Gene2Vec, Python packages "tflearn", "sklearn", "numpy" and "matplotl
 
 In convenience, you can download Anaconda from https://repo.anaconda.com/archive/, where contains most of needed packages. If there are still some special packages that are missed when running, you can use "pip install" to install the specific packages. 
 
-To insatll tensorflow, start "cmd.exe" and enter <br>
+To install tensorflow, start "cmd.exe" and enter <br>
 ```
 pip install tensorflow
 ```
@@ -25,7 +25,7 @@ pip install Keras
 Our codes are all edited by Python 3.6.5 with TensorFlow 1.3.0.
 
 # Training the embedding matrix
-Gene2Vec has supplied a trained embedding matrix in `embedding matrix.csv`. The training dataset is chosen as the whole RefSeq genomes. The NCBI accession number can be found in `NCBI accession numbers of the whole Refseq genomes.xlsx`. If you would like to train the embedding matrix by youself, jsut run `embedding.py`.
+Gene2Vec has supplied a trained embedding matrix in `embedding matrix.csv`. The training dataset is chosen as the whole RefSeq genomes. The NCBI accession number can be found in `NCBI accession numbers of the whole Refseq genomes.xlsx`. If you would like to train the embedding matrix by youself, just run `embedding.py`.
 
 # Usage
 It is simple to use Gene2Vec for users' database. <br>
