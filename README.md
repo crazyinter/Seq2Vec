@@ -46,7 +46,7 @@ Copyright (C) 2019 Jilin University
 
 Authors: Yan Miao, Fu Liu, Yun Liu
 
-This program is freely available as Python at https://github.com/crazyinter/Gene2Vec.
+This program is freely available as Python at https://github.com/crazyinter/Seq2Vec.
 
 Commercial users should contact Mr. Miao at miaoyan17@mails.jlu.edu.cn, copyright at Jilin University.
 
