@@ -79,6 +79,7 @@ def dynamicRNN(x, seqlen, weights, biases):
     
     lstm_cell = tf.contrib.rnn.BasicLSTMCell(n_hidden)
     outputs, states = tf.nn.dynamic_rnn(lstm_cell, x, dtype=tf.float32,sequence_length=seqlen)
+    outputs=attention(outputs, attention_size=ATTENTION_SIZE, time_major=False, return_alphas=False)
     value = tf.transpose(outputs, [1, 0, 2])
     last = tf.gather(value, int(value.get_shape()[0]) - 1)
 
